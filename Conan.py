@@ -1,9 +1,19 @@
 import struct
 
-
 def tamper(student_id):
-  pass
+  with open('lenna.bmp', 'r+b') as f:
+    offset = 54
+    f.seek(offset)
+    for i in student_id:
+      v = int(i)
+      if v == 0:
+        v = 10
 
+      offset = offset + v * 3
+
+      f.seek(offset)
+
+      f.write(b'\x00\x00\x00')
 
 def detect():
   with open('lenna.bmp', 'rb') as f:
@@ -34,6 +44,6 @@ def detect():
 
 if __name__ == '__main__':
   import sys
-  tamper(sys.argv[1])
+  tamper('201811113003')
 
   detect()
